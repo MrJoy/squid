@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/squid"
+
+module Squid
+  class CLI < Thor
+  end
+end
+
+Squid::CLI.start(ARGV)
