@@ -16,14 +16,16 @@ module Squid
   class CLI < Thor
     desc "info PATH", "show info about the repository at PATH"
     def info(path)
-      repo = Grit::Repo.new(path)
+      repo = Rugged::Repository.new(path)
       puts "Repository at: #{path}"
-      puts "  Is Bare:              #{repo.bare}"
+      require 'pry'
+      binding.pry
+      puts "  Is Bare:              #{repo.bare?}"
       puts "  Format Version:       #{repo.config["core.repositoryformatversion"]}"
-      puts "  Work Tree:            #{repo.working_dir}" unless repo.bare
-      puts "  Using Shared Objects: #{(!!repo.alternates) rescue false}"
-      puts "  Description:"
-      puts "    #{repo.description.split(/\n/).join("\n    ")}"
+      puts "  Work Tree:            #{repo.workdir}" unless repo.bare?
+      # puts "  Using Shared Objects: #{(!!repo.alternates) rescue false}"
+      # puts "  Description:"
+      # puts "    #{repo.description.split(/\n/).join("\n    ")}"
       puts "  Remotes:"
       repo.remotes.each do |remote|
         puts "    #{remote.name}"
